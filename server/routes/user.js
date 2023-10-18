@@ -1,8 +1,15 @@
 const express = require('express');
+const User = require('../models/user');
 const router = express.Router();
 
-router.get('/',(req,res)=>{
-  //user 정보 가져오기
-}); 
+router.post('/register',async(req,res)=>{
+  const user = new User(req.body);
 
-module.exports = router;
+  user.save((err,userInfo)=>{
+    if(err) return res.json({success:false, err});
+    return res.status(200).json({
+      success:true,
+      userInfo
+    })
+  })
+});
