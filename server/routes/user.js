@@ -1,15 +1,13 @@
-const express = require('express');
-const User = require('../models/user');
-const router = express.Router();
+var router = require('express').Router();
 
-router.post('/register',async(req,res)=>{
-  const user = new User(req.body);
-
-  user.save((err,userInfo)=>{
-    if(err) return res.json({success:false, err});
-    return res.status(200).json({
-      success:true,
-      userInfo
-    })
-  })
+//회원가입 응답처리
+router.post('/register',(req,res)=>{
+  
 });
+
+//로그인 응답처리
+router.post('/login',(req,res)=>{
+  
+});
+
+module.exports = router;
