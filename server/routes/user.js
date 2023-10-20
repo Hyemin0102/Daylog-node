@@ -72,7 +72,7 @@ router.post('/login',async(req,res)=>{
     //동일한 이름 있는 경우 비밀번호 비교
     const valid = await bcrypt.compare(password, user.password);
     if(!valid){
-      res.status(400).send('incorrect password');
+      res.status(400).send('잘못된 비밀번호입니다.');
         return;
     }
 
