@@ -1,12 +1,14 @@
 const { User } = require('../models/user');
 const Joi = require('joi');
 const bcrypt = require("bcrypt"); 
+const { default: mongoose } = require('mongoose');
 
 var router = require('express').Router();
+const saltRounds = 10; // 해시화할 때 사용할 salt의 길이
 
 //회원가입 응답처리
 router.post('/register',async(req,res)=>{
-  const schema = Joi.object().keys({
+    const schema = Joi.object().keys({
     name: Joi.string().alphanum().min(3).max(20).required(),
     password: Joi.string().required()
   });
@@ -16,34 +18,39 @@ router.post('/register',async(req,res)=>{
     return;
   }
   //유효성 검사 성공 시
-  const { name, password } = req.body;
   try{
-    const exists = await User.findByUsername(name);
-    if (exists) {
-      res.status(409).send('중복된 아이디가 있습니다.');
+    const existUser = await User.findOne({name: req.body.name});
+    if(existUser){
+      console.log('이미 존재하는 아이디입니다.');
+      res.send({success: false, message:'이미 존재하는 아이디입니다.'})
       return;
     }
-    const user = new User({
-      name,
-      password
-    });
-    console.log('user',user);
-    const hashPassword = await bcrypt.hash(user.password, 10);
-    user.password = hashPassword;
-    console.log('hash---user',user);
 
-    // access_token 이름으로 쿠키에 accessToken 담고, httpOnly 활성화해 자바스크립트 쿠키 조회 방지
+    //비밀번호 해시화
+    const hashedPassword = await bcrypt.hash(req.body.password, saltRounds);
+
+    const user = new User({
+      name: req.body.name,
+      password: hashedPassword
+    });
+
+    await user.save();
+    
+    //jwt 발급
     const accessToken = user.generateToken();
 
-    res.cookie('access_token', accessToken, {
+    res.cookie('access_token',accessToken,{
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true
     });
-    res.json(user);
-    console.log('회원가입 성공', user);
-
+    console.log('회원가입할때 jwt',accessToken)
+    return res.status(201).send({
+      success:true,
+      user
+    });
   }catch(err){
-res.json({success: false, err})
+    console.error('회원가입 에러:', err);
+    return res.status(500).send({ success: false, message: '서버 오류입니다. 다시 시도해주세요.' });
   }
 });
 
@@ -64,13 +71,19 @@ router.post('/login',async(req,res)=>{
 
     //동일한 이름 있는 경우 비밀번호 비교
     const valid = await bcrypt.compare(password, user.password);
-    console.log('password',password);
-    console.log('user.password',user.password);
     if(!valid){
       res.status(400).send('incorrect password');
         return;
     }
 
+    //jwt 발급
+    const accessToken = user.generateToken();
+
+    res.cookie('access_token',accessToken,{
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true
+    });
+    console.log('로그인할때 jwt',accessToken)
     res.status(200).json({
       loginSuccess: true,
       user
@@ -80,6 +93,23 @@ router.post('/login',async(req,res)=>{
     res.json({success: false, err})
   }
 });
+
+//로그아웃
+router.post('/logout', (req,res)=>{
+  res.clearCookie('access_token');
+  res.status(204).send();
+});
+
+//로그인 상태 확인
+router.get('/check',(req,res)=>{
+  const {access_token} = req.cookies;
+  console.log('check-user',access_token)
+  if(!access_token){
+    res.status(401).send('로그인 상태가 아닙니다.');
+    return;
+  }
+  res.json({loginstatus: true})
+})
 
 module.exports = router;
 
