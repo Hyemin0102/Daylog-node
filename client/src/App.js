@@ -6,27 +6,17 @@ import MainPage from './pages/MainPage';
 import RegisterPage from './pages/RegisterPage';
 import LoginPage from './pages/LoginPage';
 import ListPage from './pages/ListPage';
+import WritePage from './pages/WritePage';
 
-//const apiUrl = 'http://localhost:4000/api';
 
 function App() {
-/* const [text, setText] = useState('');
-
-  const sendRequest = async() => {
-    const response = await axios.get('/api')
-    setText(response.data);
-  }
-
-  useEffect(() => {
-    sendRequest();
-  }, []);
- */
   return (
     <Routes>
       <Route path='/' element={<MainPage/>}/>
       <Route path='/register' element={<RegisterPage/>}/>
       <Route path='/login' element={<LoginPage/>}/>
       <Route path='/list' element={<ListPage/>}/>
+      <Route path='/write' element={<WritePage/>}/>
     </Routes>
   );
 }

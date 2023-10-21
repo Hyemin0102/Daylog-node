@@ -4,14 +4,14 @@ const StyledButton = styled.button`
   border: none;
   border-radius: 8px;
   font-size: 1rem;
-  //padding: 1rem;
+  padding: 0 1.3rem;
   line-height:2.5rem;
   outline:none;
   cursor:pointer;
   color:#fff;
-  background-color:#0065FF;
+  background-color: RoyalBlue;
     &:hover{
-      background-color:gray;
+      background-color:CornflowerBlue;
     }
 `;
 export default StyledButton;
