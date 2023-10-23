@@ -49,8 +49,7 @@ router.post('/register',async(req,res)=>{
       user
     });
   }catch(err){
-    console.error('회원가입 에러:', err);
-    return res.status(500).send({ success: false, message: '서버 오류입니다. 다시 시도해주세요.' });
+    res.json({success: false, error: err.message})
   }
 });
 
@@ -90,7 +89,7 @@ router.post('/login',async(req,res)=>{
     })
 
   }catch(err){
-    res.json({success: false, err})
+    res.json({success: false, error: err.message})
   }
 });
 
