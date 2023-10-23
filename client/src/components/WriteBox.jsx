@@ -27,6 +27,7 @@ const WriteBox = () =>{
     setBody(e.target.value);
   }
 
+  //글 쓰는 사람 name도 여기서 조회하고 writePost에 넣기?
   const handleWritePost = async() =>{
     try {
       await dispatch(writePost({ title, body })); //글 작성

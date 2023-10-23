@@ -1,12 +1,12 @@
-import axios from "axios";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import styled from "styled-components";
-import post, { getPost } from "../redux/slice/post";
-import { fetchPosts, writePost } from "../redux/action/postAction";
+import { fetchPosts} from "../redux/action/postAction";
 import StyledButton from "./StyledButton";
+import axios from "axios";
+import UpdateBox from "./UpdateBox";
 
-const StyledListBox = styled.div`
+export const StyledListBox = styled.div`
   padding: 1.5rem;
   min-height: 6rem;
   background-color: white;
@@ -15,13 +15,11 @@ const StyledListBox = styled.div`
 
 const StyledListWrap = styled.div`
   position: relative;
-  display: flex;
-  justify-content: space-between;
   padding: 1rem;
   border-bottom: 1px solid gray;
 `;
 
-const StyledButtonWrap = styled.div`
+export const StyledButtonWrap = styled.div`
   display: flex;
   gap:1rem;
   align-items: end;
@@ -38,29 +36,102 @@ const StyledPosition = styled.p`
 const ListBox = () =>{
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post);
-  console.log('posts',posts)
-/*const filteredPosts = posts.filter((post) => post.title && post.body) 
-  console.log('filteredPosts',filteredPosts) */
+  const [editPostId, setEditPostId] = useState(null);
 
+  console.log('posts',posts)
 
   useEffect(()=>{
     dispatch(fetchPosts());
-  },[dispatch])
+  },[dispatch]);
+
+  const handleDelete = async(postId) => {
+    const confirmed = window.confirm('정말로 이 포스트를 삭제하시겠습니까?');
+    if(confirmed){
+      try{
+        await axios.delete(`/api/post/${postId}`);
+        await dispatch(fetchPosts());
+      } catch (error) {
+        console.error('포스트 삭제에 실패했습니다:', error);
+      }
+    } else {
+      console.log('포스트 삭제가 취소되었습니다.')
+    }
+    
+  };
+
+  const handleUpdate = async(postId, updateData)=>{
+    try{
+      await axios.patch(`/api/post/${postId}`, updateData);
+      await dispatch(fetchPosts());
+      setEditPostId(null); //수정 후 editingPostId를 초기화하여 수정 상태 종료
+    }catch (error) {
+      console.error('포스트 수정에 실패했습니다:', error);
+    }
+  };
+
+  //수정 버튼 클릭 시 postId 업데이트
+  const handleEditClick = (postId) => () => {
+    setEditPostId(postId);
+  };
+
+  // 수정 취소 시 editingPostId를 초기화하여 수정 상태 종료
+  const handleCancelEdit = () => {
+    setEditPostId(null); 
+  };
+
+  const options = {
+    year: 'numeric',
+    month: '2-digit',
+    day: '2-digit',
+    hour: '2-digit',
+    minute: '2-digit',
+    hour12: true
+  };
+
   return(
     <StyledListBox>
       {posts.map((post) => {
-        const formattedDate = post.publishedDate.slice(0, 10);
+        const kor = new Date(post.publishedDate);
+/*         const koreaTimeOffset = 9 * 60 * 60 * 1000; //UTC에서 9시간 더해야 대한민국 시간
+        const koreaDate = new Date(publishedDate.getTime()+ koreaTimeOffset);
+        console.log('koreaDate',koreaDate); */
+        const formattedDate = kor.toLocaleString('ko-KR', options);
+        console.log('formattedDate',formattedDate);
+        const isEditing = post._id === editPostId;
         return(
         <StyledListWrap key={post._id}>
           <div>
-            <h4>{post.title}</h4>
-            <p>{post.body}</p>
+            {isEditing ? (
+              <UpdateBox 
+                postId = {post._id}
+                initialTitle={post.title}
+                initialBody={post.body}
+                onUpdate={handleUpdate}
+                onCancel={handleCancelEdit}
+              />
+            ):(
+              <div style={{display:"flex", justifyContent:"space-between"}}>
+                <div>
+                  <h3>{post.title}</h3>
+                  <p>{post.body}</p>
+                </div>
+                <StyledButtonWrap>
+                    <StyledButton
+                      fontSize="0.7rem"
+                      padding="0 1rem"
+                      onClick={handleEditClick(post._id)}
+                      >수정</StyledButton>
+                    <StyledButton 
+                      fontSize="0.7rem"
+                      padding="0 1rem"
+                      backgroundColor="tomato"
+                      onClick={()=>handleDelete(post._id)}
+                      >삭제</StyledButton>
+                </StyledButtonWrap>
+                <StyledPosition> {formattedDate}</StyledPosition>
+              </div>
+            )}
           </div>
-          <StyledButtonWrap>
-            <StyledButton fontSize="0.7rem" padding="0 1rem">수정</StyledButton>
-            <StyledButton fontSize="0.7rem" padding="0 1rem" backgroundColor="tomato">삭제</StyledButton>
-          </StyledButtonWrap>
-          <StyledPosition>작성일 : {formattedDate}</StyledPosition>
         </StyledListWrap>
         );
       })}

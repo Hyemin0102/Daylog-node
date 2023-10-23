@@ -7,6 +7,7 @@ const postRouter = require('./routes/post');
 const cookieParser = require('cookie-parser');
 const path = require("path");
 const { User } = require('./models/user');
+const jwtChecker = require('./middleware/jwtChecker.js');
 
 
 require('dotenv').config();
@@ -16,6 +17,7 @@ const { PORT, DBURI } = process.env;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
+//app.use(jwtChecker); //jwt검증
 
 app.use(cors());
 app.use(express.static(path.join(__dirname,'../client/build')));

@@ -12,7 +12,7 @@ router.post('/write', async(req, res)=>{
 
   try{
     const {title, body} = await Schema.validateAsync(req.body);
-    const post = await Post.create({title,body,user: req.user});
+    const post = await Post.create({title,body});
     console.log("포스트작성에 user추가",post )
     res.json(post);
   }catch(err){
