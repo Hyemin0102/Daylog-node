@@ -1,8 +1,15 @@
 import { useDispatch } from "react-redux";
 import StyledButton from "./StyledButton";
 import { useNavigate } from "react-router-dom";
-import { logoutrUser } from "../redux/action";
+import { logoutrUser } from "../redux/action/userAction";
 import { useEffect, useState } from "react";
+import styled from "styled-components";
+
+const StyledHeaderWrap = styled.div`
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`;
 
 const Header = () =>{
   const dispatch = useDispatch();
@@ -26,9 +33,10 @@ const Header = () =>{
   },[isLoggedOut,navigate])
 
   return(
-    <>
-      <StyledButton onClick={handleLogout}>로그아웃</StyledButton>
-    </>
+    <StyledHeaderWrap>
+      <h1>DayLog</h1>
+      <StyledButton width="120px" height="40px" onClick={handleLogout}>로그아웃</StyledButton>
+    </StyledHeaderWrap>
   )
 }
 

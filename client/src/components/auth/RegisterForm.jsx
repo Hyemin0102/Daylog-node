@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import AuthForm from "./AuthForm"
 import { changeField, initializeForm} from "../../redux/slice/user.js";
-import { registerUser } from "../../redux/action/index.js";
+import { registerUser } from "../../redux/action/userAction";
 import { useNavigate } from "../../../node_modules/react-router-dom/dist/index";
 
 const RegisterForm = () =>{

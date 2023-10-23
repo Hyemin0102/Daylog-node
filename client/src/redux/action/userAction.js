@@ -1,5 +1,5 @@
 import { createAsyncThunk } from "@reduxjs/toolkit";
-import axios from "../../../node_modules/axios/index";
+import axios from "axios";
 
 export const loginUser = createAsyncThunk('user/login', async (userData, {rejectWithValue }) => {
   //auth/login은 redux 액션의 유형, 두번째는 payload부분. 
@@ -45,3 +45,4 @@ export const logoutrUser = createAsyncThunk('user/logout', async (_, thunkAPI) =
     const response = await axios.post('http://localhost:4000/api/user/logout');
     return response.data;
 });
+

@@ -1,4 +1,4 @@
-import { loginUser, registerUser } from "../action";
+import { loginUser, registerUser } from "../action/userAction";
 
 const { createSlice } = require("@reduxjs/toolkit");
 

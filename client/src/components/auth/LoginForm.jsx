@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux"
 import AuthForm from "./AuthForm"
 import { changeField, initializeForm } from "../../redux/slice/user";
-import { loginUser } from "../../redux/action/index";
+import { loginUser } from "../../redux/action/userAction";
 import { useNavigate } from "react-router-dom";
 
 
