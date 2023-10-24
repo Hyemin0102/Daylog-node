@@ -9,7 +9,7 @@ flex-direction: column;
 gap:4rem;
 background-color: #E5ECF3;
 height: 100%;
-padding: 3rem;
+padding: 5rem;
 `
 
 const ListPage = () =>{

@@ -117,14 +117,17 @@ const ListBox = () =>{
                 </div>
                 <StyledButtonWrap>
                     <StyledButton
+                      borderRadius="24px"
                       fontSize="0.7rem"
                       padding="0 1rem"
                       onClick={handleEditClick(post._id)}
                       >수정</StyledButton>
-                    <StyledButton 
+                    <StyledButton
+                      borderRadius="24px"
                       fontSize="0.7rem"
                       padding="0 1rem"
-                      backgroundColor="tomato"
+                      backgroundcolor="tomato"
+                      hoverbgcolor="Coral"
                       onClick={()=>handleDelete(post._id)}
                       >삭제</StyledButton>
                 </StyledButtonWrap>

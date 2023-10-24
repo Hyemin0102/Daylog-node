@@ -14,7 +14,8 @@ const StyledAuthTemplate = styled.div`
 `;
 
 const FormBox = styled.div`
-  box-shadow: 0 0 8px rgba(0,0,0,0.025);
+  position:relative;
+  box-shadow: 4px 12px 30px 6px rgba(0,0,0,.09);
   padding: 2rem;
   width:360px;
   background-color:#fff;
@@ -32,3 +33,4 @@ const AuthTemplate = ({children}) =>{
 };
 
 export default AuthTemplate;
+

@@ -14,6 +14,18 @@ const StyledWriteBox = styled.div`
   border-radius: 1rem;
 `;
 
+const StyledInput = styled.input`
+  outline:none;
+  border:1px solid Gainsboro;
+  border-radius:1rem;
+`;
+
+const StyledTextarea = styled.textarea`
+  outline:none;
+  border:1px solid Gainsboro;
+  border-radius:1rem;
+`;
+
 const WriteBox = () =>{
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
@@ -42,15 +54,15 @@ const WriteBox = () =>{
 
   return(
     <StyledWriteBox>
-      <input 
-        style={{height:"30px", paddingLeft:"1rem", outline:"none"}}
+      <StyledInput 
+        style={{height:"30px", paddingLeft:"1rem"}}
         type="text" 
-        placeholder="제목" 
+        placeholder="제목을 입력해주세요." 
         value={title} 
         onChange={handleTitleChange}/>
-      <textarea
-        style={{minHeight:"150px", padding:"1rem",outline:"none"}}
-        placeholder="내용"
+      <StyledTextarea
+        style={{minHeight:"150px", padding:"1rem"}}
+        placeholder="내용을 입력해주세요."
         value={body}
         onChange={handleBodyChange} />
       <StyledButton onClick={handleWritePost} width="6rem">글쓰기</StyledButton>
