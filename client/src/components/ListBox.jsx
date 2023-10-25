@@ -19,10 +19,22 @@ const StyledListWrap = styled.div`
   border-bottom: 1px solid gray;
 `;
 
+const StyledListInner = styled.div`
+  display: flex;
+  justify-content:space-between;
+  @media (max-width: 768px) {
+    display: block;;
+  }
+
+`
+
 export const StyledButtonWrap = styled.div`
   display: flex;
   gap:1rem;
   align-items: end;
+  @media (max-width: 768px) {
+    justify-content: end;;
+  }
 `;
 
 const StyledPosition = styled.p`
@@ -38,7 +50,6 @@ const ListBox = () =>{
   const posts = useSelector((state) => state.post);
   const [editPostId, setEditPostId] = useState(null);
 
-  console.log('posts',posts)
 
   useEffect(()=>{
     dispatch(fetchPosts());
@@ -92,11 +103,7 @@ const ListBox = () =>{
     <StyledListBox>
       {posts.map((post) => {
         const kor = new Date(post.publishedDate);
-/*         const koreaTimeOffset = 9 * 60 * 60 * 1000; //UTC에서 9시간 더해야 대한민국 시간
-        const koreaDate = new Date(publishedDate.getTime()+ koreaTimeOffset);
-        console.log('koreaDate',koreaDate); */
         const formattedDate = kor.toLocaleString('ko-KR', options);
-        console.log('formattedDate',formattedDate);
         const isEditing = post._id === editPostId;
         return(
         <StyledListWrap key={post._id}>
@@ -110,20 +117,20 @@ const ListBox = () =>{
                 onCancel={handleCancelEdit}
               />
             ):(
-              <div style={{display:"flex", justifyContent:"space-between"}}>
+              <StyledListInner>
                 <div>
                   <h3>{post.title}</h3>
                   <p>{post.body}</p>
                 </div>
                 <StyledButtonWrap>
                     <StyledButton
-                      borderRadius="24px"
+                      borderradius="24px"
                       fontSize="0.7rem"
                       padding="0 1rem"
                       onClick={handleEditClick(post._id)}
                       >수정</StyledButton>
                     <StyledButton
-                      borderRadius="24px"
+                      borderradius="24px"
                       fontSize="0.7rem"
                       padding="0 1rem"
                       backgroundcolor="tomato"
@@ -132,7 +139,7 @@ const ListBox = () =>{
                       >삭제</StyledButton>
                 </StyledButtonWrap>
                 <StyledPosition> {formattedDate}</StyledPosition>
-              </div>
+              </StyledListInner>
             )}
           </div>
         </StyledListWrap>

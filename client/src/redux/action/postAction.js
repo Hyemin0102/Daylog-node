@@ -18,7 +18,7 @@ export const writePost = createAsyncThunk('post/write', async (postData, { rejec
   }
 });
 
-//글 목록 가져오기
+//글 목록 가져오는 비동기 액션
 export const fetchPosts = createAsyncThunk('post/list', async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get('http://localhost:4000/api/post/list');

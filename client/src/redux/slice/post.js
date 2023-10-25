@@ -6,13 +6,12 @@ const postSlice = createSlice({
   initialState: [],
   reducers: {},
   extraReducers:(builder)=>{
-    //글쓰기 성공
+    //writePost 성공
     builder.addCase(writePost.fulfilled,(state,action)=>{
       state.push(action.payload)
-      //return action.payload;
     });
 
-    //글쓰기 실패
+    //writePost 실패
     builder.addCase(writePost.rejected,(state,action)=>{
       if(action.payload){
         state.error = action.payload;
@@ -21,7 +20,7 @@ const postSlice = createSlice({
       }
     });
 
-    //글 목록 조회
+    //fetchPosts 성공
     builder.addCase(fetchPosts.fulfilled, (state, action) => {
       return action.payload.reverse();
     });

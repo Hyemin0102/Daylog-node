@@ -4,7 +4,6 @@ import { useNavigate } from "react-router-dom";
 import { logoutrUser } from "../redux/action/userAction";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
-import StyledBubble from "./StyledBubble";
 
 const StyledHeaderWrap = styled.div`
   position: relative;
@@ -12,7 +11,18 @@ const StyledHeaderWrap = styled.div`
   justify-content: space-between;
   align-items: center;
   padding: 0 50px;
+  @media (max-width: 768px) {
+  padding: 0;
+  }
 `;
+
+const StyledH1 = styled.h1`
+  font-size: 3rem;
+  color: #2c2a2a;
+  @media (max-width: 768px) {
+    font-size: 2rem;
+  }
+`
 
 const Header = () =>{
   const dispatch = useDispatch();
@@ -37,11 +47,9 @@ const Header = () =>{
 
   return(
     <StyledHeaderWrap>
-      <h1>DAYLOG</h1>
-      <StyledBubble width="162px" src="./img_bubble.png" alt="bubble"/>
-      <StyledBubble width="50px" src="./img_bubble.png" alt="bubble"/>
+      <StyledH1>DAYLOG 💻</StyledH1>
       <StyledButton
-        borderRadius="24px"
+        borderradius="24px"
         width="100px"
         height="40px"
         backgroundcolor="DarkGray"

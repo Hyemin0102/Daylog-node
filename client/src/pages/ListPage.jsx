@@ -6,10 +6,13 @@ import WriteBox from "../components/WriteBox";
 const StyledMainBox = styled.div`
 display: flex;
 flex-direction: column;
-gap:4rem;
+gap:2rem;
 background-color: #E5ECF3;
 height: 100%;
-padding: 5rem;
+padding: 3rem 5rem;
+@media (max-width: 768px) {
+  padding: 2rem 2rem;
+  }
 `
 
 const ListPage = () =>{

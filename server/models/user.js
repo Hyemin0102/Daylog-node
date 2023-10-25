@@ -21,23 +21,6 @@ const userSchema = mongoose.Schema({
   },
 });
 
- //회원가입 시 비밀번호 hash화
-/* userSchema.pre('save', async function(next){
-  try{
-    const user = this;
-  //비밀번호 변경 시 암호화
-  if(user.isModified("password")){
-    const salt = await bcrypt.genSalt(saltRounds);
-    const hash = await bcrypt.hash(user.password, salt);
-    user.password = hash;
-    }
-    await user.save();
-    next();
-  }catch(err){
-    next(err); //에러 발생 시 다음 미들웨어에 에러 전달
-  }
-}); */
-
 //로그인 시 비밀번호 암호화 -> db에 저장된 비밀번호와 비교
 userSchema.methods.comparePassword = async function(plainPassword){
   try{
@@ -66,26 +49,6 @@ userSchema.methods.generateToken = function(){
   );
   return token;
 }
-
-//비밀번호 확인 메소드
-/* userSchema.methods.comparePassword = function(plainPassword,cb){
-  const user = this;
-  //plainPassword암호화해서 db에 있는 비밀번호와 비교
-  bcrypt.compare(plainPassword,user.password,function(err,isMatch){
-    if(err) return cb(err);
-    cb(null, isMatch);
-  });
-}; */
-
-//토큰 생성 메서드
-/* userSchema.methods.generateToken = function(){
-  const user = this;
-  //jsonwebtoken
-  const token = jwt.sign(user._id.toHexString(),"secretToken");
-  user.token = token;
-  return user.save().then(user => user.token);
-}; */
-
 
 
 const User = mongoose.model('User',userSchema);

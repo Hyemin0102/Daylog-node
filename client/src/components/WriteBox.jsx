@@ -12,15 +12,16 @@ const StyledWriteBox = styled.div`
   min-height: 8rem;
   background-color: white;
   border-radius: 1rem;
+  margin-bottom:1.5rem;
 `;
 
-const StyledInput = styled.input`
+export const StyledInput = styled.input`
   outline:none;
   border:1px solid Gainsboro;
   border-radius:1rem;
 `;
 
-const StyledTextarea = styled.textarea`
+export const StyledTextarea = styled.textarea`
   outline:none;
   border:1px solid Gainsboro;
   border-radius:1rem;
@@ -39,7 +40,6 @@ const WriteBox = () =>{
     setBody(e.target.value);
   }
 
-  //글 쓰는 사람 name도 여기서 조회하고 writePost에 넣기?
   const handleWritePost = async() =>{
     try {
       await dispatch(writePost({ title, body })); //글 작성
@@ -55,7 +55,7 @@ const WriteBox = () =>{
   return(
     <StyledWriteBox>
       <StyledInput 
-        style={{height:"30px", paddingLeft:"1rem"}}
+        style={{height:"30px", paddingLeft:"1rem",fontWeight:"bold", fontSize:"1.17rem"}}
         type="text" 
         placeholder="제목을 입력해주세요." 
         value={title} 

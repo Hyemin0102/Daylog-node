@@ -2,7 +2,6 @@ import styled from "styled-components";
 import StyledButton from "../components/StyledButton";
 import AuthTemplate from "../components/auth/AuthTemplate";
 import { useNavigate } from "react-router-dom";
-import StyledBubble from "../components/StyledBubble";
 
 const Styledflex = styled.div`
     display: flex;

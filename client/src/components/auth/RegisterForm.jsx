@@ -11,7 +11,6 @@ const RegisterForm = () =>{
   const {form} = useSelector(({user}) => ({
     form: user.register,
   }));
-  //console.log('form',form)
 
   //인풋 변경 핸들러
   const onChange = (e) =>{

@@ -15,7 +15,7 @@
     "react-router-dom": "^6.17.0",
     "react-scripts": "5.0.1",
     "redux-logger": "^3.0.6",
-    "styled-components": "^6.1.0",
+    "styled-components": "^5.3.11",
     "web-vitals": "^2.1.4"
   },
   "scripts": {

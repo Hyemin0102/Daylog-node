@@ -10,14 +10,3 @@ const RegisterPage = () =>{
 };
 
 export default RegisterPage;
-
-/*   const [text, setText] = useState('');
-
-  const sendReq = async() =>{
-    const response = await axios.get('http://localhost:4000/api');
-    setText(response.data.hello);
-  };
-
-  useEffect(()=>{
-    sendReq();
-  },[])*/
