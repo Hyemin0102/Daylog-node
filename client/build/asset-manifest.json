@@ -1,0 +1,14 @@
+{
+  "files": {
+    "main.css": "/static/css/main.161c6f50.css",
+    "main.js": "/static/js/main.dd6314c5.js",
+    "static/media/Pretendard-Medium.woff": "/static/media/Pretendard-Medium.32bc02b054e25f16c999.woff",
+    "index.html": "/index.html",
+    "main.161c6f50.css.map": "/static/css/main.161c6f50.css.map",
+    "main.dd6314c5.js.map": "/static/js/main.dd6314c5.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.161c6f50.css",
+    "static/js/main.dd6314c5.js"
+  ]
+}
