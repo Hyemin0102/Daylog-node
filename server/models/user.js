@@ -13,11 +13,11 @@ const userSchema = mongoose.Schema({
     type: String,
     minlength: 5
   },
-  token: {
+  access_token: {
     type: String,
   },
-  tokenExp: {
-    type: Number,
+  fresh_token: {
+    type: String,
   },
 });
 
