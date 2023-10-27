@@ -1,6 +1,10 @@
 # ✨daylog-node
 React로 화면단을 구현하고 Node.js + express 로 서버를 구현하고 RESTful API를 디자인해 mongodb로 user 기능(회원가입,로그인, 로그아웃, JWT 발급 및 검증)과 post기능(포스트 작성, 포스트 조회, 포스트 삭제, 포스트 수정)을 구현한 프로젝트.
 
+https://daylog-node.com/
+
+(도메인 생성하였으나 서버 요청 시 에러 발생해 수정중..)
+
 <br>
 
 <b><user 기능></b>
@@ -88,7 +92,7 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
 * [⚙개발 환경](#개발-환경)
 * [🚩주요 기능](#주요-기능)
   - [express, mongodb, react 연결](#express-mongodb-react-연결)
-  - [user 기능 Restful API](#user-기능-Restful-API])
+  - [user 기능 Restful API](#user-기능-Restful-API)
     - 회원가입(Post) - '/register'
     - 로그인(Post)  - '/login'
     - 로그아웃(Post) - '/logout'
@@ -119,7 +123,7 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
 <hr>
 <br>
 
-### 💻 express, mongodb, react 연결
+### 💻express, mongodb, react 연결
 - dotenv 설치해 .env 환경변수 연결
 - cors 미들웨어 적용해 CORS 에러 방지
 - mongoose.connect 로 mongoose 연결
@@ -178,7 +182,7 @@ module.exports = (app) => {
 };
 ```
 
-### 💻 user 기능 Restful API
+### 💻user 기능 Restful API
 - User 스키마, 모델, 인스턴스 매서드 정의
 ```javascript
 const userSchema = mongoose.Schema({
@@ -534,7 +538,7 @@ const handleLogout = () =>{
 <hr>
 <br>
 
-### 💻 post 기능 Restful API
+###💻 post 기능 Restful API
 - Post 스키마, 모델 정의
 ```javascript
 const PostSchema = mongoose.Schema({
@@ -805,7 +809,7 @@ const UpdateBox = ({postId,initialTitle,initialBody,onUpdate,onCancel}) => {
 <hr>
 <br>
 
-### 💻 middleware 정의
+### 💻middleware 정의
 - jwtChecker.js(JWT 검증)
   - JWT 검증 미들웨어 정의 및 app.use 적용
 ```javascript
@@ -863,20 +867,16 @@ export default userChecker;
 <hr>
 <br>
 
-### 💻 사이트 배포(AWS EC2)
+### 💻사이트 배포(AWS EC2)
 - 사이트 배포는 AWS EC2 인스턴스 생성해 node.js 포트인 4000포트를 연결하고 프로젝트의 git clone 으로 배포
 - AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 https 로 변경
-  - AWS Route 53 도메인 구입 및 도메인 인증
-  - 
-  -   
+  - AWS Route 53 도메인 구입 및 도메인 인증서 발급
+  - target group 생성 및 ALB 생성, 설정(가용영역은 EC2 영역 포함)
+  - 보안그룹 설정
+  - 리스너, 라우팅 설정
+  - 인증서 설정
+  - ALB와 도메인 연결
+  - 레코드 생성
+까지 해서 https://daylog-node.com/ 도메인을 만들었는데 로컬에서는 서버 요청이 잘 되나 외부 컴퓨터로 접속 시 서버 요청이 안된다...ㅜㅜ 여긴 계속 에러 해결 작업중..
 
 
-
-
-
-
-
-<b>server</b>
-```javascript
-
-```
