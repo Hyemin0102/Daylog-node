@@ -90,7 +90,7 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
 
 ## 🧾목차
 * [⚙개발 환경](#개발-환경)
-* [🚩주요 기능](#주요-기능)
+* 🚩주요 기능
   - [express, mongodb, react 연결](#express-mongodb-react-연결)
   - [user 기능 Restful API](#user-기능-Restful-API)
     - 회원가입(Post) - '/register'
@@ -182,6 +182,10 @@ module.exports = (app) => {
 };
 ```
 
+<br>
+<hr>
+<br>
+
 ### 💻user 기능 Restful API
 - User 스키마, 모델, 인스턴스 매서드 정의
 ```javascript
@@ -234,9 +238,11 @@ userSchema.methods.generateToken = function(){
 
 <br>
 <br>
-  
-✅ <b>회원가입(Post) - '/register'</b>
 
+<details>
+<summary>✅ <b>회원가입(Post) - '/register'</b></summary>
+<div markdown="1">
+	
 - ⭐server
     - Joi 라이브러리 유효성 검사
     - 존재하는 아이디인지 확인(findOne)
@@ -425,8 +431,12 @@ const onSubmit = async(e) =>{
 
 <br>
 <br>
+</div>
+</details>
 
-✅<b>로그인(Post)  - '/login'</b>
+<details>
+<summary>✅<b>로그인(Post)  - '/login'</b></summary>
+<div markdown="1">
 
 - ⭐server
   - 입력값으로 존재하는 아이디 불러옴(findByUsername)
@@ -502,7 +512,12 @@ const onSubmit = async(e) =>{
 <br>
 <br>
 
-✅ <b>로그아웃(Post) - '/logout'</b>
+</div>
+</details>
+
+<details>
+<summary>✅ <b>로그아웃(Post) - '/logout'</b></summary>
+<div markdown="1">
 
 - ⭐server
     - 쿠키 초기화로 로그아웃
@@ -534,11 +549,14 @@ const handleLogout = () =>{
   };
 ```
 
+</div>
+</details>
+
 <br>
 <hr>
 <br>
 
-### 💻 post 기능 Restful API
+### 💻post 기능 Restful API
 - Post 스키마, 모델 정의
 ```javascript
 const PostSchema = mongoose.Schema({
@@ -561,7 +579,9 @@ module.exports = {Post};
 
 <br>
 
-✅ <b>포스트 작성(Post) - '/write'</b>
+<details>
+<summary>✅ <b>포스트 작성(Post) - '/write'</b></summary>
+<div markdown="1">
 
 - ⭐server
   - Joi 라이브러리 유효성 검사
@@ -651,7 +671,12 @@ const handleWritePost = async() =>{
 <br>
 <br>
 
-✅ <b>포스트 조회(Get) - '/list'</b>
+</div>
+</details>
+
+<details>
+<summary>✅ <b>포스트 조회(Get) - '/list'</b></summary>
+<div markdown="1">
 
 - ⭐server
 ```javascript
@@ -695,7 +720,12 @@ export const fetchPosts = createAsyncThunk('post/list', async (_, { rejectWithVa
 <br>
 <br>
 
-✅ <b>포스트 삭제(Delete) - '/:id'</b>
+</div>
+</details>
+
+<details>
+<summary>✅ <b>포스트 삭제(Delete) - '/:id'</b></summary>
+<div markdown="1">
 
 - ⭐server
   - findByIdAndRemove : mongoose에서 제공하는 메서드로 특정 id의 포스트를 삭제함
@@ -730,7 +760,12 @@ const handleDelete = async(postId) => {
 <br>
 <br>
 
-✅ <b>포스트 수정(Patch) - '/:id'</b>
+</div>
+</details>
+
+<details>
+  <summary>✅ <b>포스트 수정(Patch) - '/:id'</b></summary>
+  <div markdown="1">
 
 -⭐server
   -  findByIdAndUpdate : mongoose에서 제공하는 메서드로 특정 id의 포스트를 업데이트함
@@ -804,6 +839,8 @@ const UpdateBox = ({postId,initialTitle,initialBody,onUpdate,onCancel}) => {
   <StyledButton onClick={handleUpdateClick}>수정</StyledButton>
 
 ```
+</div>
+</details>
 
 <br>
 <hr>
