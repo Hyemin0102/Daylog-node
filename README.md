@@ -7,16 +7,39 @@ https://daylog-node.com/
 
 <br>
 
-<b><user 기능></b>
+<h3><user 기능></h3>
 <div>
-
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b3c4b12-2c5a-4994-9192-7cdc8f421ebd" width="33%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/6f998d7c-bfeb-467b-8233-7cce07c59221" width="33%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/e55215b5-e16f-4712-a18e-abc78783ad62" width="33%"/>
 </div>
+
 
 <br>
 
-<b><post 기능></b>
+<h3><post 기능></h3>
 <div>
+<b> ✅ 포스트 작성</b>
+	
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/3e1cc019-0c99-4aa1-b091-80b74295c06f"/>
 
+<br>
+<br>
+<b> ✅ 포스트 조회</b>
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b783769-0921-4000-a202-ebaaa03609f9"/>
+
+<br>
+<br>
+<b> ✅ 포스트 수정</b>
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/d7a81670-77ba-46a9-a7a9-8d725115e859"/>
+
+<br>
+<br>
+<b> ✅ 포스트 삭제</b>
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/29b16c71-8d5a-4061-ba9e-57adf7058616"/>
 </div>
 
 
