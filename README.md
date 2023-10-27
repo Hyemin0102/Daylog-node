@@ -538,7 +538,7 @@ const handleLogout = () =>{
 <hr>
 <br>
 
-###💻 post 기능 Restful API
+### 💻 post 기능 Restful API
 - Post 스키마, 모델 정의
 ```javascript
 const PostSchema = mongoose.Schema({
@@ -877,6 +877,7 @@ export default userChecker;
   - 인증서 설정
   - ALB와 도메인 연결
   - 레코드 생성
+  
 까지 해서 https://daylog-node.com/ 도메인을 만들었는데 로컬에서는 서버 요청이 잘 되나 외부 컴퓨터로 접속 시 서버 요청이 안된다...ㅜㅜ 여긴 계속 에러 해결 작업중..
 
 
