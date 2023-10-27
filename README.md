@@ -1,5 +1,5 @@
 # ✨daylog-node
-React로 화면단을 구현하고 Node.js + express 로 서버를 구현하고 RESTful API를 디자인해 mongodb로 user 기능(회원가입,로그인, 로그아웃, JWT 발급 및 검증)과 post기능(포스트 작성, 포스트 조회, 포스트 삭제, 포스트 수정)을 구현한 프로젝트.
+React 화면단, Node.js + express 서버단을 구현하고 RESTful API를 디자인해 mongodb로 user 기능(회원가입,로그인, 로그아웃, JWT 발급 및 검증)과 post기능(포스트 작성, 포스트 조회, 포스트 삭제, 포스트 수정)을 구현한 프로젝트.
 
 https://daylog-node.com/
 
