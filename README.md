@@ -3,15 +3,14 @@ React 화면단, Node.js + express 서버단을 구현하고 RESTful API를 디�
 
 https://daylog-node.com/
 
-(도메인 생성하였으나 서버 요청 시 에러 발생해 수정중..)
 
 <br>
 
 <h3><user 기능></h3>
 <div>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b3c4b12-2c5a-4994-9192-7cdc8f421ebd" width="33%"/>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/6f998d7c-bfeb-467b-8233-7cce07c59221" width="33%"/>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/e55215b5-e16f-4712-a18e-abc78783ad62" width="33%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b3c4b12-2c5a-4994-9192-7cdc8f421ebd" width="30%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/6f998d7c-bfeb-467b-8233-7cce07c59221" width="30%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/e55215b5-e16f-4712-a18e-abc78783ad62" width="30%"/>
 </div>
 
 
@@ -129,8 +128,10 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
     -  userChecker.js(user 확인)
   - [사이트 배포(AWS EC2)](#사이트-배포AWS-EC2)
 * [🛠개선점 & 💡해결](#개선점--해결)
-  - [aws EC2 배포 https 변경](#aws-EC2-배포-https-변경)
-  - 외부 접속 netword error 해결
+  - [cors 에러](#cors-에러)
+  	- http에서 https 환경으로 변경
+  - [net 에러](#net-에러)
+    	- 서버 요청하는 경로 변경
 
 
 <br>
@@ -928,16 +929,19 @@ export default userChecker;
 <br>
 
 ### 💻사이트 배포(AWS EC2)
-- 사이트 배포는 AWS EC2 인스턴스 생성해 node.js 포트인 4000포트를 연결하고 프로젝트의 git clone 으로 배포
+- 사이트 배포는 AWS EC2 인스턴스 생성해 node.js 포트인 4000포트를 연결하고 프로젝트를 git clone 으로 가져와 배포
 - AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 https 로 변경
-  - AWS Route 53 도메인 구입 및 도메인 인증서 발급
-  - target group 생성 및 ALB 생성, 설정(가용영역은 EC2 영역 포함)
-  - 보안그룹 설정
-  - 리스너, 라우팅 설정
-  - 인증서 설정
-  - ALB와 도메인 연결
-  - 레코드 생성
+- 서버 무중단 배포 위해 pm2 설정
+
   
-까지 해서 https://daylog-node.com/ 도메인을 만들었는데 로컬에서는 서버 요청이 잘 되나 외부 컴퓨터로 접속 시 서버 요청이 안된다...ㅜㅜ 여긴 계속 에러 해결 작업중..
+<br>
+<hr>
+<br>
+
+### 🛠개선점 & 💡해결
+- CORS 에러 (✅해결)
+  그 유명한 CORS 에러를 이번에 아주 제대로 경험했다.. 분명 구글링해서 찾은대로 미들웨어 cors 설정도 하고 Access-Control-Allow-Origin 같은 header 설정도 다 해보았는데도 계속 에러가 발생했다.
+
+- net 에러 (✅해결)
 
 
