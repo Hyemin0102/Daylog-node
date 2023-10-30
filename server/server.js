@@ -18,7 +18,7 @@ const { PORT, DBURI } = process.env;
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(jwtChecker);
+//app.use(jwtChecker);
 
 app.use(cors());
 app.use(express.static(path.join(__dirname,'../client/build')));
@@ -31,9 +31,6 @@ mongoose.connect(DBURI,{
   .then(()=>{console.log("몽고db 연결 성공")})
   .catch((err)=>console.log("몽고db 연결 실패"))
 
-  app.get('/api', (req, res) =>{
-    res.send('전송 성공!!!')
-  });
 
 const port = PORT || 4000;
 app.listen(port,()=>{
@@ -45,6 +42,6 @@ app.use('/api/user', require('./routes/user.js'));
 app.use('/api/post',require('./routes/post.js'));
 
 //res.send로 보내면 경로만 찍히므로, sendFile로 보내주어야 local3000과 동일한 화면 보임
-app.get('*', (req, res) => {
+app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, '../client/build/index.html'));
 });

@@ -1,4 +1,4 @@
-const jwt = require("jsonwebtoken");
+/* const jwt = require("jsonwebtoken");
 const User = require("../models/user");
 
 const jwtChecker = async (req, res, next) => {
@@ -31,4 +31,4 @@ const jwtChecker = async (req, res, next) => {
   }
 };
 
-module.exports = jwtChecker;
+module.exports = jwtChecker; */
