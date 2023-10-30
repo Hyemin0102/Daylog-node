@@ -29,7 +29,7 @@ const userSlice = createSlice({
     initializeForm:(state, action) => {
       const form = action.payload;
       state[form] = {...initialState[form]};//현재 state의 form 초기화
-    }
+    },
   },
   extraReducers:(builder)=>{
     //loginUser 성공
@@ -67,5 +67,6 @@ const userSlice = createSlice({
 export const {
   changeField,
   initializeForm,
+  setUser
 } = userSlice.actions;
 export default userSlice.reducer;

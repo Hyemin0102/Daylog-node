@@ -5,6 +5,7 @@ import { logoutrUser } from "../redux/action/userAction";
 import { useEffect, useState } from "react";
 import styled from "styled-components";
 
+
 const StyledHeaderWrap = styled.div`
   position: relative;
   display: flex;
@@ -14,15 +15,20 @@ const StyledHeaderWrap = styled.div`
   @media (max-width: 768px) {
   padding: 0;
   }
+
+    h1{
+      font-size: 3rem;
+    color: #2c2a2a;
+    @media (max-width: 768px) {
+      font-size: 2rem;
+      }
+    }
+    div{
+      display:"flex";
+      flex-direction:column;
+    }
 `;
 
-const StyledH1 = styled.h1`
-  font-size: 3rem;
-  color: #2c2a2a;
-  @media (max-width: 768px) {
-    font-size: 2rem;
-  }
-`
 
 const Header = () =>{
   const dispatch = useDispatch();
@@ -43,18 +49,23 @@ const Header = () =>{
     if(isLoggedOut){
       navigate('/login');
     }
+
   },[isLoggedOut,navigate])
 
   return(
     <StyledHeaderWrap>
-      <StyledH1>DAYLOG 💻</StyledH1>
-      <StyledButton
-        borderradius="24px"
-        width="100px"
-        height="40px"
-        backgroundcolor="DarkGray"
-        hoverbgcolor="Silver"
-        onClick={handleLogout}>로그아웃</StyledButton>
+      <h1>DAYLOG 💻</h1>
+        <div>
+          <StyledButton
+          borderradius="24px"
+          width="100px"
+          height="40px"
+          backgroundcolor="DarkGray"
+          hoverbgcolor="Silver"
+          onClick={handleLogout}>로그아웃</StyledButton>
+        </div>
+        
+
     </StyledHeaderWrap>
   )
 }

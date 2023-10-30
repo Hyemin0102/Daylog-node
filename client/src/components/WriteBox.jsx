@@ -27,7 +27,7 @@ export const StyledTextarea = styled.textarea`
   border-radius:1rem;
 `;
 
-const WriteBox = () =>{
+const WriteBox = ({user}) =>{
   const dispatch = useDispatch();
   const [title, setTitle] = useState('');
   const [body, setBody] = useState('');
@@ -42,7 +42,7 @@ const WriteBox = () =>{
 
   const handleWritePost = async() =>{
     try {
-      await dispatch(writePost({ title, body })); //글 작성
+      await dispatch(writePost({ title, body, user })); //글 작성
       await dispatch(fetchPosts()); //글 조회
       setTitle('');
       setBody('');

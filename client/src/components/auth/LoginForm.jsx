@@ -26,7 +26,6 @@ const LoginForm = () =>{
   //폼 등록 이벤트 핸들러
   const onSubmit = async(e) =>{
     e.preventDefault();
-    console.log('로그인 제출됨');
     const {name,password } = form;
 
     if (!name || !password) {
@@ -37,7 +36,6 @@ const LoginForm = () =>{
         .unwrap()
         .then((res)=>{
           navigate('/list');
-          console.log(res)
         })
         .catch((err)=>{
           console.log(err)

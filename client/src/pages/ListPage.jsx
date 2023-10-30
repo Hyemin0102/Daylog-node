@@ -19,9 +19,9 @@ const ListPage = () =>{
   
   return(
     <StyledMainBox>
-      <Header />
-      <WriteBox />
-      <ListBox />
+      <Header/>
+      <WriteBox/>
+      <ListBox/>
     </StyledMainBox>
   )
 }
