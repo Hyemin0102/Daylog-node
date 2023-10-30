@@ -37,13 +37,13 @@ router.post('/register',async(req,res)=>{
     await user.save();
     
     //jwt 발급
-    /* const accessToken = user.generateToken();
+    const accessToken = user.generateToken();
 
     res.cookie('access_token',accessToken,{
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true
     });
-    console.log('회원가입할때 jwt',accessToken) */
+    console.log('회원가입할때 jwt',accessToken)
     
     return res.status(201).send({
       success:true,
@@ -77,13 +77,13 @@ router.post('/login',async(req,res)=>{
     }
 
     //jwt 발급
-    /* const accessToken = user.generateToken();
+    const accessToken = user.generateToken();
 
     res.cookie('access_token',accessToken,{
       maxAge: 1000 * 60 * 60 * 24 * 7,
       httpOnly: true
     });
-    console.log('로그인할때 jwt',accessToken) */
+    console.log('로그인할때 jwt',accessToken)
 
     res.status(200).json({
       loginSuccess: true,
