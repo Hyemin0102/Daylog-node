@@ -939,8 +939,11 @@ export default userChecker;
 <br>
 
 ### 🛠개선점 & 💡해결
-- CORS 에러 (✅해결)
-  그 유명한 CORS 에러를 이번에 아주 제대로 경험했다.. 분명 구글링해서 찾은대로 미들웨어 cors 설정도 하고 Access-Control-Allow-Origin 같은 header 설정도 다 해보았는데도 계속 에러가 발생했다.
+- cors 에러 (✅해결)
+
+그 유명한 CORS 에러를 이번에 아주 제대로 경험했다.. 분명 구글링해서 찾은대로 미들웨어 cors 설정도 하고 Access-Control-Allow-Origin 같은 header 설정도 다 해보았는데도 계속 에러가 발생했다.
+
+<br>
 
 - net 에러 (✅해결)
 
