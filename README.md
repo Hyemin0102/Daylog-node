@@ -933,8 +933,8 @@ export default userChecker;
 <br>
 
 ### 💻사이트 배포(AWS EC2)
-- 사이트 배포는 AWS EC2 인스턴스 생성해 node.js 포트인 4000포트를 연결하고 프로젝트를 git clone 으로 가져와 배포
-- AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 https 로 변경
+- 사이트 배포는 AWS EC2 인스턴스 접속해 git clone으로 프로젝트 가져와 서버 연결
+- AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 도메인 구매해 https로 변경
 - 서버 무중단 배포 위해 pm2 설정
 
   
