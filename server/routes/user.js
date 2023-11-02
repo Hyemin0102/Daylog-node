@@ -36,15 +36,6 @@ router.post('/register',async(req,res)=>{
 
     await user.save();
     
-    //jwt 발급
-    const accessToken = user.generateToken();
-
-    res.cookie('access_token',accessToken,{
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true
-    });
-    console.log('회원가입할때 jwt',accessToken)
-    
     return res.status(201).send({
       success:true,
       user
