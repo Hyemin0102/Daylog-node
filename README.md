@@ -3,15 +3,16 @@ React 화면단, Node.js + express 서버단을 구현하고 RESTful API를 디�
 
 https://daylog-node.com/
 
-(도메인 생성하였으나 서버 요청 시 에러 발생해 수정중..)
+(AWS EC2 배포 -> 도메인 연결)
+
 
 <br>
 
 <h3><user 기능></h3>
 <div>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b3c4b12-2c5a-4994-9192-7cdc8f421ebd" width="33%"/>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/6f998d7c-bfeb-467b-8233-7cce07c59221" width="33%"/>
-<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/e55215b5-e16f-4712-a18e-abc78783ad62" width="33%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/8b3c4b12-2c5a-4994-9192-7cdc8f421ebd" width="30%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/6f998d7c-bfeb-467b-8233-7cce07c59221" width="30%"/>
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/e55215b5-e16f-4712-a18e-abc78783ad62" width="30%"/>
 </div>
 
 
@@ -48,7 +49,7 @@ https://daylog-node.com/
 <br>
 
 ## 프로젝트 소개
-REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로, Node.js(express)로 SSR환경을 구축하고 MongoDB를 활용해 데이터베이스를 관리한다.
+REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로, Node.js(express)로 서버 환경을 구축하고 MongoDB로 데이터베이스를 관리한다.
 일상을 간단하게 공유하는 게시판 형식의 웹사이트로 회원가입과 로그인/로그아웃 및 JWT를 발급해 사용자 보안을 강화했다. 로그인 후 포스트 작성, 삭제, 수정이 가능하다.
 
 <br>
@@ -129,8 +130,12 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
     -  userChecker.js(user 확인)
   - [사이트 배포(AWS EC2)](#사이트-배포AWS-EC2)
 * [🛠개선점 & 💡해결](#개선점--해결)
-  - [aws EC2 배포 https 변경](#aws-EC2-배포-https-변경)
-  - 외부 접속 netword error 해결
+  - [cors 에러](#cors-에러)
+  	- http에서 https 환경으로 변경
+  - [net 에러](#net-에러)
+    	- 서버 요청하는 경로 변경
+  - [pm2 무중단 배포 속도 개선](#pm2-무중단-배포-속도-개선)
+    	- pm2 inmemory, local 버전 맞추기
 
 
 <br>
@@ -928,16 +933,68 @@ export default userChecker;
 <br>
 
 ### 💻사이트 배포(AWS EC2)
-- 사이트 배포는 AWS EC2 인스턴스 생성해 node.js 포트인 4000포트를 연결하고 프로젝트의 git clone 으로 배포
-- AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 https 로 변경
-  - AWS Route 53 도메인 구입 및 도메인 인증서 발급
-  - target group 생성 및 ALB 생성, 설정(가용영역은 EC2 영역 포함)
-  - 보안그룹 설정
-  - 리스너, 라우팅 설정
-  - 인증서 설정
-  - ALB와 도메인 연결
-  - 레코드 생성
+- 사이트 배포는 AWS EC2 인스턴스 접속해 git clone으로 프로젝트 가져와 서버 연결
+- AWS 로 사이트를 배포하면 http로 만들어지는데 사이트의 보안을 위해 도메인 구매해 https로 변경
+- 서버 무중단 배포 위해 pm2 설정
+
   
-까지 해서 https://daylog-node.com/ 도메인을 만들었는데 로컬에서는 서버 요청이 잘 되나 외부 컴퓨터로 접속 시 서버 요청이 안된다...ㅜㅜ 여긴 계속 에러 해결 작업중..
+<br>
+<hr>
+<br>
+
+### 🛠개선점 & 💡해결
+- <b>cors 에러 (✅해결)</b>
+
+그 유명한 CORS 에러를 이번에 아주 제대로 경험했다.. 해결 방법은 크게 2가지가 있는 듯하다.
+1. header 설정 - ```res.header("Access-Control-Allow-Origin", "*");``` 와 같이 header를 직접 설정해주기
+2. cors 미들웨어 설치 - ```npm install --save cors``` cors미들웨어를 설치해 app.use로 적용시켜주기
+
+나는 둘 다 해보았지만 header를 설정하는 것보다 cors 미들웨어를 사용하는 것이 더 간편해 이렇게 사용했고 혹시 둘 다 설정하는 것은 오히려 cors 충돌이 날 수 있어 피해야한다고 한다. 
+```javascript
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
+app.use(cookieParser());
+app.use(jwtChecker);
+
+const cors = require('cors');
+app.use(cors());
+app.use(express.static(path.join(__dirname,'../client/build')));
+```
+그러나 이렇게 설정했는데도 계속 CORS 에러가 발생해서 한참 헤맸는데 결국 원인을 찾았다... 클라이언트 단에서 axios.post/get 등 api 요청하는 주소를 'http://localhost:4000/api/user/write' 처럼 설정을 해놓아서 연결이 안되었던 것이다. 이 후 아래와 같이 수정하니 해결되었다..
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/b32235c0-4fd7-459d-b1f5-35f8158e8657" width="70%"/>
+
+<br>
+<br>
+
+- <b>net 에러 (✅해결)</b>
+
+CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적용하기로 했다. https란 기존 http 주소에 ssl인증서를 적용하게 되는 방식인데, 내가 사이트를 배포한 aws ec2 인스턴스는 기본적으로 http가 적용되기 때문에 도메인을 따로 구매해서 연결해 https로 적용시켜주어야 했다. 간단한 진행 순서는 <b>route53 도메인 구매 -> 인증서 발급 -> Target Group 생성 -> ALB(Application Load Balancer) 세팅 -> ALB와 도메인 연결 </b>  로 https가 적용된 도메인 주소를 얻을 수 있었다!! 
+
+<br>
+
+그렇게 도메인 주소로 들어가 서버에 요청을 했는데 이번에는 ```net::ERR_CONNECTION_REFUSED``` 이런 에러가 발생했다. 원인은 클라이언트 단에서 redux로 비동기 액션 함수를 정의했는데 thunk의 첫번째 인자로 전달된 문자열과 axios 요청 주소가 달라 생긴 에러였다. createAsyncThunk 에서 첫번째 문자열은 단순히 식별자로 사용되는 걸로 생각하고 axios 요청 주소와 정확하게 맞추지 않았었는데, 이렇게 두개가 다를 경우 클라이언트가 원하는 서버 엔드포인트로 요청을 보내지 않을 수 있고, 응답을 제대로 반환하지 못한다고 한다. 
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/b4fd95ee-c6b4-4c25-b61c-5afecf27b730" width="70%"/>
+
+(기존 createAsyncThunk의 문자열 '/post/write' 에서 수정)
+
+리덕스의 thunk 사용법에 대해 제대로 인지하지 못해 발생한 문제라고 생각한다. 앞으로 무언가 새로운 기능을 구현할 때는 꼭 기초부터 숙지하고 적용하자!!
+
+<br>
+
+- <b>pm2 무중단 배포 속도 개선 (✅해결)</b>
+
+도메인 연결까지 완료하고 우분투 서버 종료 시에도 계속 유지되도록 무중단 배포를 설정해야했다. node.js를 사용하는 경우 가장 많이 사용하는 pm2를 설치해 적용했는데 pm2를 사용안하고 서버 요청을 했을 때보다 훨~씬 느리게 응답을 받아오는 문제가 발생했다.(체감 로그인 하는데만 10초..?) pm2의 state를 살펴보니 
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/21b9e211-a69e-466d-8906-14433787e1b6"/>
+
+이렇게 in memory pm2와 local pm2의 버전이 다른 걸 확인 할 수 있었다. (이미지는 옛날버전으로 참고만!) 이 두개의 버전이 다른것이 문제인 것 같아 ```pm2 upgrade``` 를 진행해보았으나 적용이 되지 않았고, 아예 pm2 프로세스를 중지하고 ```pm2 kill```, 다시 설치해 문제를 해결했다. 
+
+<img src="https://github.com/Hyemin0102/Daylog-node/assets/128768462/7815691c-1aeb-472e-b283-ad920704779d"/>
+
+이 후 버전 차이 없어지고 빠르게 정상 작동!
+
+
 
 
