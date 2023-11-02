@@ -275,7 +275,6 @@ userSchema.methods.generateToken = function(){
     - Joi 라이브러리 유효성 검사
     - 존재하는 아이디인지 확인(findOne)
     - bcrypt 비밀번호 해시화
-    - jwt 발급해 쿠키 저장
 ```javascript
 const saltRounds = 10;
 
@@ -307,15 +306,7 @@ router.post('/register',async(req,res)=>{
     });
 
     await user.save();
-    
-    //jwt 발급
-    const accessToken = user.generateToken();
 
-    res.cookie('access_token',accessToken,{
-      maxAge: 1000 * 60 * 60 * 24 * 7,
-      httpOnly: true
-    });
-    console.log('회원가입할때 jwt',accessToken)
     return res.status(201).send({
       success:true,
       user
@@ -403,7 +394,7 @@ export default userSlice.reducer;
 - <b>createAsyncThunk로 비동기 액션 함수 처리</b>
 
 ```javascript
-export const registerUser = createAsyncThunk('user/register', async (userData, {rejectWithValue }) => {
+export const registerUser = createAsyncThunk('/api/user/register', async (userData, {rejectWithValue }) => {
   console.log('registerUser',userData); 
   try{
     const response = await axios.post('/api/user/register', {
@@ -491,11 +482,30 @@ router.post('/login',async(req,res)=>{
       res.status(400).send('잘못된 비밀번호입니다.');
         return;
     }
+
+    //jwt 발급
+    const accessToken = user.generateToken();
+
+    res.cookie('access_token',accessToken,{
+      maxAge: 1000 * 60 * 60 * 24 * 7,
+      httpOnly: true
+    });
+    console.log('로그인할때 jwt',accessToken)
+
+    res.status(200).json({
+      loginSuccess: true,
+      user
+    })
+
+  }catch(err){
+    res.json({success: false, error: err.message})
+  }
+});
 ```
 - ⭐client
     - createAsyncThunk로 정의한 비동기 액션 함수
 ```javascript
-export const loginUser = createAsyncThunk('user/login', async (userData, {rejectWithValue }) => {
+export const loginUser = createAsyncThunk('/api/user/login', async (userData, {rejectWithValue }) => {
   try{
     const response = await axios.post('/api/user/login', {
       //이 값들이 reducer에서 action.payload
@@ -559,7 +569,7 @@ router.post('/logout', (req,res)=>{
 - ⭐client
   - createAsyncThunk로 로그아웃 비동기 액션 함수 정의
 ```javascript
-export const logoutrUser = createAsyncThunk('user/logout', async (_, thunkAPI) => { 
+export const logoutrUser = createAsyncThunk('/api/user/logout', async (_, thunkAPI) => { 
     const response = await axios.post('/api/user/logout');
     return response.data;
 });
@@ -665,7 +675,7 @@ export default postSlice.reducer;
 ```
 - createAsyncThunk로 포스트 작성하는 비동기 액션 함수 writePost 정의
 ```javascript
-export const writePost = createAsyncThunk('post/write', async (postData, { rejectWithValue }) => {
+export const writePost = createAsyncThunk('/api/post/write', async (postData, { rejectWithValue }) => {
   try {
     const response = await axios.post('/api/post/write', {
       title:postData.title,
@@ -725,7 +735,7 @@ router.get('/list', async(req, res)=>{
 const dispatch = useDispatch();
 const posts = useSelector((state) => state.post);
 
-export const fetchPosts = createAsyncThunk('post/list', async (_, { rejectWithValue }) => {
+export const fetchPosts = createAsyncThunk('/api/post/list', async (_, { rejectWithValue }) => {
   try {
     const response = await axios.get('/api/post/list');
     return response.data.posts;
@@ -893,7 +903,7 @@ const jwtChecker = async (req, res, next) => {
     // 만료일 1일 남았을 때 재발급
     if (decoded.exp - now < 60 * 60 * 24) {
       const user = await User.findById(decoded._id); // id로 user 정보를 찾아와서
-      const freshToken = user.createToken(); // 토큰 발급
+      const freshToken = user.generateToken(); // 토큰 발급
       res.cookie('fresh_token', freshToken, {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7days
         httpOnly: true
