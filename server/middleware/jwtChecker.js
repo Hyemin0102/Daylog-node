@@ -16,7 +16,7 @@ const jwtChecker = async (req, res, next) => {
     // 만료일 1일 남았을 때 재발급
     if (decoded.exp - now < 60 * 60 * 24) {
       const user = await User.findById(decoded._id); // id로 user 정보를 찾아와서
-      const freshToken = user.createToken(); // 토큰 발급
+      const freshToken = user.generateToken(); // 토큰 발급
       res.cookie('fresh_token', freshToken, {
         maxAge: 1000 * 60 * 60 * 24 * 7, // 7days
         httpOnly: true
