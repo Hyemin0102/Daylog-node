@@ -97,7 +97,7 @@ router.post('/login',async(req,res)=>{
 
 //로그아웃
 router.post('/logout', (req,res)=>{
-  //res.clearCookie('access_token');
+  res.clearCookie('access_token');
   res.status(204).send();
   console.log('로그아웃 되었습니다.')
 });

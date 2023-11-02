@@ -8,6 +8,83 @@
 
 근데 왜 https://daylog-node.com/ 는 외부에서는 접속이 안될까..? 로컬, 원격 둘다 서버 연결되있는 경우 외부도 되야하는거아님? 
 
-
-
 로컬 서버, 원격 우분투 서버 둘다 연결해놔도 외부 컴퓨터에서는 접속 안됨
+
+계정 이름
+hyemin 
+gkdlt7373@gmail.coom
+
+AWS 계정 ID
+117887898424
+
+정규 사용자 ID
+0873bff471b9a3582e1fcca063716138bbb66e69c16fa5edff84ccfc1b11598d
+
+보안그룹 id
+sg-07d828d895b6f4015
+
+
+C: > 사용자 > key
+ ssh -i "daylog2.pem" ubuntu@ec2-43-201-26-193.ap-northeast-2.compute.amazonaws.com
+
+sudo service mongod start
+-몽고디비 시작
+-Once the installation is completed enable MongoDB to start at system startup.
+-~$ sudo systemctl enable mongod
+Created symlink /etc/systemd/system/multi-user.target.wants/mongod.service → /lib/systemd/system/mongod.service. 나옴
+mongosh 시작
+use admin 접속
+db.createUser({user: "admin" , pwd: passwordPrompt() , roles: [{ role: "userAdminAnyDatabase" , db: "admin"}]})
+pwd: goals1245
+sudo vi /etc/mongod.conf 에서 bindIp, security 수정
+
+mongodb://admin:goals1245@43.202.176.163:27017/?authMechanism=DEFAULT
+
+
+2. sudo service mongod start -시작 
+sudo service mongod status - 상태 확인
+sudo service mongod stop - 중지
+sudo service mongod restart - 재시작 
+
+
+
+mongosh
+use admin
+db.auth("hyemin cho", "goals1245") -> 로그인해야 compass 연결됨
+
+
+ssh -i "daylog3.pem" ubuntu@43.202.176.163
+npm, node.js, mongodb 설치
+
+***compass로 username, password 설정한 커넥트 생성(탄력적 IP로)
+
+db.createUser(
+  {
+    user: "admindaylog",
+    pwd: passwordPrompt(), 
+    roles: [
+      { role: "userAdminAnyDatabase", db: "admin" },
+      { role: "readWriteAnyDatabase", db: "admin" }
+    ]
+  }
+)
+pw: admin1234
+
+관리자 권한 필요 시 
+db.auth"admindaylog",passwordPrompt())
+
+
+//SSH 접속
+//mongodb 시작, 상태확인
+//mongosh > use admin > db.auth("admindaylog", passwordPrompt()) -> 비밀번호 입력 
+   ***mongosh --port 27017  --authenticationDatabase "admin" -u "admindaylog" -p -> admin으로 접속됨
+//sudo ufw status 로 방화벽 확인 가능하고 sudo ufw disable / sudo ufw enable 로 활성화
+//종료할땐 exit
+
+
+인스턴스 생성 -> key를 C: > 사용자에 폴더 만들어서 거기에 넣고 ssh로 우분투 접속 -> nodejs, npm, git 설치 ->nodejs 버전 업그레이드 git clone -> server, client로 각각 들어가서 npm 설치 후 server에서 npm start했을 때 연결되는지! 
+++ .env 설정한건 git에 올라가있지 않아서 우분투 환경에서 찾을 수 없다. server 경로에서 vim .env 로 생성
+++ 수정은 vi server.js로 파일 열고 수정 후 저장
+
+
+Access to XMLHttpRequest at 'http://localhost:4000/api/user/login' from origin 'http://ec2-43-201-26-193.ap-northeast-2.compute.amazonaws.com:4000' has been blocked by CORS policy: The request client is not a secure context and the resource is in more-private address space `local`.  -> https 로 변경해야함...

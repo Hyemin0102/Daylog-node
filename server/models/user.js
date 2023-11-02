@@ -41,14 +41,14 @@ userSchema.statics.findByUsername = async function(name){
 
 
 //JWT 발급
-/* userSchema.methods.generateToken = function(){
+userSchema.methods.generateToken = function(){
   const token = jwt.sign(
     {_id: this.id, name: this.name},//첫번째 페이로드에 넣을 데이터
     process.env.SECRET_KEY,//개인키
     {expiresIn:'7d'}//유효기간
   );
   return token;
-} */
+}
 
 
 const User = mongoose.model('User',userSchema);
