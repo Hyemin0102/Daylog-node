@@ -1005,6 +1005,67 @@ CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적�
 
 이 후 버전 차이 없어지고 빠르게 정상 작동!
 
+<br>
+
+- <b>JWT access, refresh 토큰 유효기간, 쿠키 저장 유효기간 수정</b>
+
+처음 JWT발급하고 검증하는 단계에서 자동 로그아웃시간을 안따졌었는데 그렇게 작성하면 내가 로그아웃을 해서 쿠키를 초기화하지 않는 이상 내 토큰 정보가 너무 오래 쿠키에 저장되어있다는 사실이 생각났다. 또 처음 JWT 발급할때 access토큰 유효기간과 refresh토큰 유효기간을 동일하게 설정했는데 refresh토큰을 사용하는 궁극적인 이유가 보안을 위해서인만큼 access는 짧게, refresh는 길게 설정해야했다.(왜 그랬지..?)
+
+- 토큰 정보 2시간 유효로 쿠키 저장
+  - 토큰 발급하는 인스턴스에 유효기간을 인자로 받아와 설정
+```javascript
+userSchema.methods.generateToken = function(expiration){
+  const token = jwt.sign(
+    {_id: this.id, name: this.name},//첫번째 페이로드에 넣을 데이터
+    process.env.SECRET_KEY,//개인키
+    {expiresIn: expiration }//유효기간
+  );
+  return token;
+}
+
+//로그인 로직 중
+const accessToken = user.generateToken('2h');
+
+res.cookie('access_token',accessToken,{
+	maxAge: 1000 * 60 * 60 * 2, //2시간동안 쿠키에 저장
+	httpOnly: true
+});
+```
+- refresh 토큰 만료기간 길게 설정
+```javascript
+const jwtChecker = async (req, res, next) => {
+  const token = req.cookies.access_token;
+  if (!token) return next();
+  try {
+    // verify
+    const decoded = jwt.verify(token, process.env.SECRET_KEY);
+    req.user = {
+      _id: decoded._id,
+      name: decoded.name
+    };
+    const now = Math.floor(Date.now() / 1000);
+    
+    // 만료 10분 남았을 때 재발급
+    if (decoded.exp - now < 600) {
+      const user = await User.findById(decoded._id); // id로 user 정보를 찾아와서
+      const freshToken = user.generateToken('7d'); // 해당 user한테 7일의 refresh토큰을 다시 만들어줌
+      res.cookie('fresh_token', freshToken, { //새로 발급한 refresh토큰 2시간동안 쿠키 저장
+        maxAge: 1000 * 60 * 60 * 2,
+        httpOnly: true
+      });
+    return next();
+    }
+
+    return next();
+  } catch (error) {
+    console.log('error', error);
+    res.status(401).json({ error: 'Unauthorized' });
+  }
+};
+```
+이렇게 쿠키에 토큰 정보 2시간 만료로 설정해 로그아웃을 하지 않더라도 2시간 이후에 쿠키에 아무것도 남아있지 않게 하고, 처음 access 토큰 발급 시 2시간 설정 -> 10분 남았을때 refresh 토큰 발급(7일 유효)으로 혹시 공격자가 access 토큰을 탈취하더라도 유효기간이 짧으므로 사용할 수 없게하였다. 
+
+이 후에 추가할 기능은 이렇게 저장한 access, refresh토큰으로 클라이언트에서 로그인 정보를 불러와 redux로 전역 상태관리를 할 것!
 
 
 
