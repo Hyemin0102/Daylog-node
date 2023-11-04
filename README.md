@@ -133,9 +133,9 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
   - cors 에러
   	- http에서 https 환경으로 변경
   - net 에러
-    	- 서버 요청하는 경로 변경
+  	- 서버 요청하는 경로 변경
   - pm2 무중단 배포 속도 개선
-    	- pm2 inmemory, local 버전 맞추기
+  	- pm2 inmemory, local 버전 맞추기
   - JWT access, refresh 토큰 유효기간, 쿠키 저장 유효기간 수정
 
 
@@ -954,7 +954,7 @@ export default userChecker;
 <br>
 
 ### 🛠개선점 & 💡해결
-- <b>cors 에러</b>
+✔ <b>cors 에러</b>
 
 그 유명한 CORS 에러를 이번에 아주 제대로 경험했다.. 해결 방법은 크게 2가지가 있는 듯하다.
 1. header 설정 - ```res.header("Access-Control-Allow-Origin", "*");``` 와 같이 header를 직접 설정해주기
@@ -978,7 +978,7 @@ app.use(express.static(path.join(__dirname,'../client/build')));
 <br>
 <br>
 
-- <b>net 에러</b>
+✔ <b>net 에러</b>
 
 CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적용하기로 했다. https란 기존 http 주소에 ssl인증서를 적용하게 되는 방식인데, 내가 사이트를 배포한 aws ec2 인스턴스는 기본적으로 http가 적용되기 때문에 도메인을 따로 구매해서 연결해 https로 적용시켜주어야 했다. 간단한 진행 순서는 <b>route53 도메인 구매 -> 인증서 발급 -> Target Group 생성 -> ALB(Application Load Balancer) 세팅 -> ALB와 도메인 연결 </b>  로 https가 적용된 도메인 주소를 얻을 수 있었다!! 
 
@@ -994,7 +994,7 @@ CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적�
 
 <br>
 
-- <b>pm2 무중단 배포 속도 개선</b>
+✔ <b>pm2 무중단 배포 속도 개선</b>
 
 도메인 연결까지 완료하고 우분투 서버 종료 시에도 계속 유지되도록 무중단 배포를 설정해야했다. node.js를 사용하는 경우 가장 많이 사용하는 pm2를 설치해 적용했는데 pm2를 사용안하고 서버 요청을 했을 때보다 훨~씬 느리게 응답을 받아오는 문제가 발생했다.(체감 로그인 하는데만 10초..?) pm2의 state를 살펴보니 
 
@@ -1008,11 +1008,11 @@ CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적�
 
 <br>
 
-- <b>JWT access, refresh 토큰 유효기간, 쿠키 저장 유효기간 수정</b>
+✔ <b>JWT access, refresh 토큰 유효기간, 쿠키 저장 유효기간 수정</b>
 
 처음 JWT발급하고 검증하는 단계에서 자동 로그아웃시간을 안따졌었는데 그렇게 작성하면 내가 로그아웃을 해서 쿠키를 초기화하지 않는 이상 내 토큰 정보가 너무 오래 쿠키에 저장되어있다는 사실이 생각났다. 또 처음 JWT 발급할때 access토큰 유효기간과 refresh토큰 유효기간을 동일하게 설정했는데 refresh토큰을 사용하는 궁극적인 이유가 보안을 위해서인만큼 access는 짧게, refresh는 길게 설정해야했다.(왜 그랬지..?)
 
-✅ 토큰 정보 2시간 유효로 쿠키 저장 -> 토큰 발급하는 인스턴스에 유효기간을 인자로 받아와 설정
+- 토큰 정보 2시간 유효로 쿠키 저장 -> 토큰 발급하는 인스턴스에 유효기간을 인자로 받아와 설정
 ```javascript
 userSchema.methods.generateToken = function(expiration){
   const token = jwt.sign(
