@@ -130,12 +130,13 @@ REST API와 서버 기능을 구현해보고싶어 만들게 된 프로젝트로
     -  userChecker.js(user 확인)
   - [사이트 배포(AWS EC2)](#사이트-배포AWS-EC2)
 * [🛠개선점 & 💡해결](#개선점--해결)
-  - [cors 에러](#cors-에러)
+  - cors 에러
   	- http에서 https 환경으로 변경
-  - [net 에러](#net-에러)
+  - net 에러
     	- 서버 요청하는 경로 변경
-  - [pm2 무중단 배포 속도 개선](#pm2-무중단-배포-속도-개선)
+  - pm2 무중단 배포 속도 개선
     	- pm2 inmemory, local 버전 맞추기
+  - JWT access, refresh 토큰 유효기간, 쿠키 저장 유효기간 수정
 
 
 <br>
@@ -1011,8 +1012,7 @@ CORS 문제를 해결하고 http의 안전성을 높이기 위해 https를 적�
 
 처음 JWT발급하고 검증하는 단계에서 자동 로그아웃시간을 안따졌었는데 그렇게 작성하면 내가 로그아웃을 해서 쿠키를 초기화하지 않는 이상 내 토큰 정보가 너무 오래 쿠키에 저장되어있다는 사실이 생각났다. 또 처음 JWT 발급할때 access토큰 유효기간과 refresh토큰 유효기간을 동일하게 설정했는데 refresh토큰을 사용하는 궁극적인 이유가 보안을 위해서인만큼 access는 짧게, refresh는 길게 설정해야했다.(왜 그랬지..?)
 
-- 토큰 정보 2시간 유효로 쿠키 저장
-  - 토큰 발급하는 인스턴스에 유효기간을 인자로 받아와 설정
+✅ 토큰 정보 2시간 유효로 쿠키 저장 -> 토큰 발급하는 인스턴스에 유효기간을 인자로 받아와 설정
 ```javascript
 userSchema.methods.generateToken = function(expiration){
   const token = jwt.sign(
