@@ -35,17 +35,16 @@ userSchema.methods.comparePassword = async function(plainPassword){
 //스태틱 메서드로 데이터베이스에서 사용자 검색(findOne)
 userSchema.statics.findByUsername = async function(name){
   const user = await this.findOne({name});
-  console.log('findByUsername',user);
   return user
 }; 
 
 
 //JWT 발급
-userSchema.methods.generateToken = function(){
+userSchema.methods.generateToken = function(expiration){
   const token = jwt.sign(
     {_id: this.id, name: this.name},//첫번째 페이로드에 넣을 데이터
     process.env.SECRET_KEY,//개인키
-    {expiresIn:'7d'}//유효기간
+    {expiresIn: expiration }//유효기간
   );
   return token;
 }

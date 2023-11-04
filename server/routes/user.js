@@ -67,11 +67,11 @@ router.post('/login',async(req,res)=>{
         return;
     }
 
-    //jwt 발급
-    const accessToken = user.generateToken();
+    //2시간짜리 jwt 발급
+    const accessToken = user.generateToken('2h');
 
     res.cookie('access_token',accessToken,{
-      maxAge: 1000 * 60 * 60 * 24 * 7,
+      maxAge: 1000 * 60 * 60 * 2, //2시간동안 쿠키에 저장
       httpOnly: true
     });
     console.log('로그인할때 jwt',accessToken)
