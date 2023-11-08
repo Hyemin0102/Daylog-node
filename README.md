@@ -430,7 +430,7 @@ const onSubmit = async(e) =>{
     }
     try{
       await dispatch(registerUser(form))
-        .unwrap()
+        .unwrap() //redux/toolkit에서 비동기 액션 함수사용처리할때 promise 결과처리해주는것
         .then(()=>{
           alert('회원가입에 성공했습니다! 로그인 페이지로 이동합니다.');
         })
