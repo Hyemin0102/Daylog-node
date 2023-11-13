@@ -5,6 +5,7 @@ import { fetchPosts} from "../redux/action/postAction";
 import StyledButton from "./StyledButton";
 import axios from "axios";
 import UpdateBox from "./UpdateBox";
+import { useCookies } from 'react-cookie';
 
 export const StyledListBox = styled.div`
   padding: 1.5rem;
@@ -46,6 +47,17 @@ const StyledPosition = styled.p`
 `
 
 const ListBox = () =>{
+  //쿠키정보 테스트 - react-cookie설치해서 클라이언트단에서 쿠키 정보 가져오기 시도
+  const [cookies,setCookie, removeCookie] = useCookies(['access_token']);
+  const accessToken = cookies.access_token;
+  if (accessToken) {
+    console.log('액세스 토큰:', accessToken);
+  } else {
+    console.log('액세스 토큰이 없습니다.');
+  }
+
+
+
   const dispatch = useDispatch();
   const posts = useSelector((state) => state.post);
   const [editPostId, setEditPostId] = useState(null);
